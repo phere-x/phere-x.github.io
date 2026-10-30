@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .container {
+      display: flex;
+      height: 100%;
+    }
+    #video-container {
+      flex: 8;
+      overflow: hidden;
+    }
+    #chat-container {
+      flex: 2;
+      overflow: hidden;
+    }
+    #resize-button {
+      position: absolute;
+      top: 15px;
+      right: 10px;
+      cursor: pointer;
+    }
+    #resize-button img {
+      width: 35px;
+      height: 35px;
+    }
+    #chat-size-input-container {
+      position: absolute;
+      top: 20px;
+      right: 50px;
+      display: none;
+    }
+    #chat-size-input {
+      width: 70px;
+      height: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="video-container">
+        <iframe src="https://player.kick.com/xqc" frameborder="0" allowfullscreen="true" scrolling="no" height="100%" width="100%"></iframe>
+    </div>
+    <div id="chat-container">
+      <iframe frameborder="0" scrolling="yes" id="chat_embed" src="https://www.twitch.tv/embed/xqc/chat?darkpopout&enableExtensions=true&parent=atmos.lol" height="100%" width="100%"></iframe>
+        </div>
+    <div id="resize-button">
+      <img src="./images/chat.png" alt="Chat Icon">
+    </div>
+    <div id="chat-size-input-container">
+      <input type="number" id="chat-size-input" placeholder="Chat Size (%)" min="0" max="100">
+    </div>
+  </div>
+
+  <script>
+    const container = document.querySelector('.container');
+    const chatContainer = document.querySelector('#chat-container');
+    const resizeButton = document.querySelector('#resize-button');
+    const chatSizeInputContainer = document.querySelector('#chat-size-input-container');
+    const chatSizeInput = document.querySelector('#chat-size-input');
+
+    resizeButton.addEventListener('click', () => {
+      chatSizeInputContainer.style.display = 'block';
+      chatSizeInput.focus();
+    });
+
+    chatSizeInput.addEventListener('blur', () => {
+      chatSizeInputContainer.style.display = 'none';
+    });
+
+    chatSizeInput.addEventListener('input', () => {
+        const chatSize = parseInt(chatSizeInput.value);
+        if (!isNaN(chatSize)) {
+            const containerWidth = container.offsetWidth;
+            const chatWidth = (chatSize / 100) * containerWidth;
+            chatContainer.style.flexBasis = chatWidth + 'px';
+        } else {
+            chatContainer.style.flexBasis = ''; // Reset the resize behavior
+        }
+        });
+  </script>
+</body>
+</html>
+
